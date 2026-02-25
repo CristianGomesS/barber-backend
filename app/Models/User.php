@@ -51,13 +51,37 @@ class User extends Authenticatable
         ];
     }
 
-     protected function setPasswordAttribute($value) {
+    protected function setPasswordAttribute($value)
+    {
         $this->attributes['password'] = Hash::make($value);
+    }
+    /**
+     * Verifica se o usuário é um funcionário (barbeiro).
+     *
+     * @return bool
+     */
+    public function isEmployee(): bool
+    {
+        // Usamos opcional (?) para evitar erro caso a role não esteja carregada
+        return $this->role?->slug === 'employee';
+    }
+
+    /**
+     * Verifica se o usuário é um administrador.
+     */
+    public function isAdmin(): bool
+    {
+        return $this->role?->slug === 'admin';
     }
     public function services(): BelongsToMany
     {
         return $this->belongsToMany(Service::class)
             ->withPivot('price')
             ->withTimestamps();
+    }
+
+    public function role()
+    {
+        return $this->belongsTo(Role::class);
     }
 }

@@ -11,5 +11,8 @@ class ServiceRepository extends BaseRepository
         parent::__construct($model);
     }
 
-
+     public function getServicesWithBarbers()
+    {
+        return $this->entity->with('barbers')->get();
+    }
 }

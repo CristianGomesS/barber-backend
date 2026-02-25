@@ -11,5 +11,12 @@ class UserRepository extends BaseRepository
         parent::__construct($model);
     }
 
-
+    public function findWhereFirst(string $column, string $value)
+    {
+        return $this->entity->where($column, $value)->with(['role.abilities'])->first();
+    }
+    public function findById(int $id)
+    {
+         return $this->entity->findOrFail($id)->with(['role.abilities']);
+    }
 }

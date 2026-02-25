@@ -12,7 +12,7 @@ abstract class BaseRepository implements RepositoryInterface
     }
     public function getAll()
     {
-        return $this->entity->all();
+        return $this->entity->get();
     }
 
     public function findById(int $id)

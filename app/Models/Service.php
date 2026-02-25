@@ -23,16 +23,16 @@ class Service extends Model
     protected static function boot(){
         parent::boot();
         static::creating(function(Service $service){
-            $service->slug= Str::slug($service->name);
+            $service->slug= Str::slug($service->name,'_');
         });
     }
     /**
      * Relacionamento: Um serviço pode ser prestado por vários barbeiros (User).
      * Aqui buscamos o preço que está na tabela pivot 'service_user'.
      */
-    public function employees(): BelongsToMany
+    public function barbers(): BelongsToMany
     {
-        return $this->belongsToMany(User::class)
+        return $this->belongsToMany(User::class,'service_user')
             ->withPivot('price')
             ->withTimestamps();
     }
