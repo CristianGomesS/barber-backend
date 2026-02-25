@@ -1,59 +1,43 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# 💈 BarberShop API
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Backend robusto para gestão de barbearia, desenvolvido com **Laravel 11/12** seguindo as melhores práticas de arquitetura de software, como **Repository Pattern** e **Service Layer**.
 
-## About Laravel
+## 🚀 Status do Projeto
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+### 1. Autenticação & Segurança
+- [x] **Registro e Login de usuários** (Sanctum/JWT).
+- [x] **Esqueci minha senha**: Geração de token aleatório de 5 dígitos.
+- [x] **E-mail Transacional**: Envio de template Blade customizado (Dark/Gold).
+- [x] **Reset de Senha**: Validação de token e alteração com `password_confirmation`.
+- [ ] **Múltiplos Perfis**: Diferenciação entre Cliente, Barbeiro e Admin.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+### 2. Gestão de Dados (CRUDs)
+- [x] **Usuários (Users)**: Cadastro e gerenciamento de perfis.
+- [x] **Serviços (Services)**: Cadastro de itens (Corte, Barba, Combo) com preço e tempo.
+- [x] **Agendamentos (Appointments)**: Estrutura base de vinculação cliente/serviço.
+- [ ] **Disponibilidade**: Lógica de bloqueio de horários ocupados.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## 🏗️ Arquitetura
+O projeto utiliza uma separação clara de responsabilidades para facilitar a escalabilidade:
+* **Controllers:** Gerenciam as rotas e respostas HTTP.
+* **Services:** Camada de **Regra de Negócio** (onde a mágica acontece).
+* **Repositories:** Abstração total da camada de persistência (Eloquent).
+* **Views (E-mail):** Templates responsivos com imagens via CID para evitar bloqueios em clientes de e-mail.
 
-## Learning Laravel
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+---
 
-## Laravel Sponsors
+## 🛠️ Tecnologias
+* **Linguagem:** PHP 8.4
+* **Framework:** Laravel 11/12
+* **E-mail:** Mailtrap (Sandbox)
+* **Banco de Dados:** MySQL/PostgreSQL
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+---
 
-### Premium Partners
+## 🔧 Configuração Local
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
-
-## Contributing
-
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+1. **Clonar o repositório:**
+   ```bash
+   git clone [https://github.com/CristianGomesS/barber-backend.git](https://github.com/CristianGomesS/barber-backend.git)
