@@ -23,8 +23,11 @@ class UserService extends BaseService
                 'email' => ['As credenciais fornecidas estão incorretas.'],
             ]);
         }
+        $user->tokens()->delete();
+
+        $abilities = $user->role->abilities()->pluck('slug')->toArray();
         $deviceName = substr(request()->header('User-Agent', 'Unknown'), 0, 255);
-        return $user->createToken($deviceName)->plainTextToken;
+        return $user->createToken($deviceName, $abilities)->plainTextToken;
     }
     public function logout($request): void
     {

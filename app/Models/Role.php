@@ -12,8 +12,13 @@ class Role extends Model
     protected static function boot()
     {
         parent::boot();
-        static::creating(function ($Role) {
-            $Role->slug = Str::slug($Role->name);
+        static::creating(function ($role) {
+            $role->slug = Str::slug($role->name,'_');
         });
+    }
+
+    public function abilities()
+    {
+        return $this->belongsToMany(Ability::class);
     }
 }
