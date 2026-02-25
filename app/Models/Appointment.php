@@ -17,6 +17,20 @@ class Appointment extends Model
         'final_price',
         'status'
     ];
+    protected $casts = [
+        'scheduled_at' => 'datetime',
+    ];
+    public function customer() {
+        return $this->belongsTo(User::class, 'customer_id');
+    }
+
+    public function employee() {
+        return $this->belongsTo(User::class, 'employee_id');
+    }
+
+    public function service() {
+        return $this->belongsTo(Service::class);
+    }
     /**
      * Regra de Negócio (DDD): Método estático para criar um agendamento.
      * Em vez de preencher manualmente no Controller, usamos este método

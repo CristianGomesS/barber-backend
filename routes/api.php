@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\AbilityController;
+use App\Http\Controllers\Api\AppointmentController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\ForgotPasswordController;
 use App\Http\Controllers\Api\RoleController;
@@ -55,6 +56,10 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         Route::delete('/{id}', [AbilityController::class, 'destroy'])->name('api.ability.destroy')->middleware(['abilities:delete_ability']);
         Route::put('restore/{id}', [AbilityController::class, 'restore'])->name('api.ability.restore')->middleware(['abilities:delete_ability']);
     });
+    Route::prefix('appointments')->group(function () {
+        Route::get('/', [AppointmentController::class, 'myAppointments']);
+    });
+
 });
 
 // Route::fallback(function () {
