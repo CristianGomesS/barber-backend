@@ -2,11 +2,12 @@
 
 namespace Database\Seeders;
 
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-class userSeeder extends Seeder
+class UserSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -14,24 +15,25 @@ class userSeeder extends Seeder
     public function run(): void
     {
         //
+        $rolesList = Role::all()->pluck('id', 'slug')->toArray();
         $users = [
             [
                 'name' => 'admin',
                 'email' => 'admin@admin.com',
-                'password' => bcrypt('123456'),
-                'role_id' => 1
+                'password' => '123456',
+                'role_id' => $rolesList['admin']
             ],
             [
                 'name' => 'employee',
                 'email' => 'employee@employee.com',
-                'password' => bcrypt('1233456'),
-                'role_id' => 2
+                'password' =>'123456',
+                'role_id' => $rolesList['employee']
             ],
             [
                 'name' => 'customer',
                 'email' => 'customer@customer.com',
-                'password' => bcrypt('123456'),
-                'role_id' => 3
+                'password' => '123456',
+                'role_id' => $rolesList['customer']
             ]
         ];
 

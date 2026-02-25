@@ -40,7 +40,7 @@ class ServiceSeeder extends Seeder
 
         foreach ($services as $service) {
             Service::updateOrCreate(
-                ['slug' => Str::slug($service['name'])],
+                ['slug' => Str::slug($service['name'],'_')],
                 [
                     'name' => $service['name'],
                     'duration_minutes' => $service['duration_minutes']
