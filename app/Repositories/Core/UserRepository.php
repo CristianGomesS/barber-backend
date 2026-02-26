@@ -17,6 +17,6 @@ class UserRepository extends BaseRepository
     }
     public function findById(int $id)
     {
-         return $this->entity->findOrFail($id)->with(['role.abilities']);
+         return $this->entity->with(['role.abilities'])->findOrFail($id);
     }
 }

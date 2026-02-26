@@ -17,10 +17,10 @@ class RoleAbilitySeeder extends Seeder
         
         $roleAbilities = [
             'employee' => [
-                'list_services', 'create_services', 'update_services', 'delete_services'    ,
+                'list_services', 'create_services', 'update_services', 'delete_services','list_appointments','create_appointments'
                 ],
             'customer' => [
-                'list_services', 
+                'list_services', 'list_appointments','create_appointments'
                 ],
             ];
 

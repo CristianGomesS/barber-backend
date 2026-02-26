@@ -57,7 +57,8 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         Route::put('restore/{id}', [AbilityController::class, 'restore'])->name('api.ability.restore')->middleware(['abilities:delete_ability']);
     });
     Route::prefix('appointments')->group(function () {
-        Route::get('/', [AppointmentController::class, 'myAppointments']);
+        Route::get('/', [AppointmentController::class, 'myAppointments'])->name('api.appointments.index')->middleware(['abilities:list_appointments']);
+        Route::post('/', [AppointmentController::class, 'beforeStore'])->name('api.appointments.store')->middleware(['abilities:create_appointments']);
     });
 
 });

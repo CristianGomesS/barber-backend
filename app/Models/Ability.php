@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use DateTimeInterface;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
@@ -19,13 +20,17 @@ class Ability extends Model
     protected $hidden = [
         'updated_at'
     ];
-    protected static function boot()
+    protected function serializeDate(DateTimeInterface $date): string
     {
-        parent::boot();
-        static::creating(function ($ability) {
-            $ability->slug = Str::slug($ability->name,'_');
-        });
+        return $date->format('Y-m-d H:i:s');
     }
+    // protected static function boot()
+    // {
+    //     parent::boot();
+    //     static::creating(function ($ability) {
+    //         $ability->slug = Str::slug($ability->name,'_');
+    //     });
+    // }
     public function roles()
     {
         return $this->belongsToMany(Role::class);

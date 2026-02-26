@@ -31,7 +31,7 @@ public $userRepository;
     public function syncBarberServices(int $barberId, array $services)
     {
         $barber = $this->userRepository->findById($barberId);
-        if (!$barber->isEmployee() || !$barber->isAdmin()) {
+        if (!$barber->isEmployee() && !$barber->isAdmin()) {
             throw new \Exception("Apenas usuários com perfil de funcionário podem ser vinculados a serviços.");
         }
         return $barber->services()->sync($services);

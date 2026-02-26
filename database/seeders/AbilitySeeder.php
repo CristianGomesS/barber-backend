@@ -69,7 +69,14 @@ class AbilitySeeder extends Seeder
             // FORGOT PASSWORD
             [
                 'name' => 'Forçar Reset de Senha','slug' => 'force_forgot_password'
-            ]
+            ],
+            // APPOINTMENTS
+            [
+                'name' => 'listar agendamentos','slug' => 'list_appointments'
+            ],
+            [
+                'name' => 'criar agendamentos','slug' => 'create_appointments'
+            ],
         ];
 
         foreach ($abilities as $ability) {

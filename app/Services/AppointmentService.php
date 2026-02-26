@@ -7,6 +7,7 @@ use App\Repositories\Core\UserRepository;
 use App\Services\BaseService;
 use Carbon\Carbon;
 use Exception;
+use Illuminate\Support\Facades\DB;
 
 /**
  * @property AppointmentRepository $repository
@@ -21,19 +22,23 @@ class AppointmentService extends BaseService
     }
 
 
-    public function createAppointment(array $data)
+    public function createAppointment(array $data): mixed
     {
-        $user = $this->userRepository->findById($data['employee_id']);
-        $service = $user->services()->where('id', $data['service_id'])->first();
-        if (! $service) {
-            throw new Exception("Este barbeiro não realiza o serviço selecionado.");
+        $employee = $this->userRepository->findById($data['employee_id']);
+        $service = $employee->validateProfessionalCapability($data['service_id']);
+        if (Carbon::parse($data['scheduled_at'])->isPast()) {
+            throw new Exception("Não é possível agendar em uma data retroativa.");
         }
-        $start = Carbon::parse($data['schaduled_at']);
-        $end = Carbon::parse($data['schaduled_at'])->addMinutes($service->duration_minutes);
+
+        $start = Carbon::parse($data['scheduled_at']);
+        $end = $start->copy()->addMinutes($service->duration_minutes);
         $this->checkAvailable($data['employee_id'], $start, $end);
         $data['final_price'] = $service->pivot->price;
         $data['status'] = 'pending';
-        return $this->repository->store($data);
+        $data['end_at'] = $end;
+        return DB::transaction(function () use ($data) {
+            return $this->repository->store($data);
+        });
     }
 
     /**
@@ -41,7 +46,6 @@ class AppointmentService extends BaseService
      */
     public function checkAvailable(int $employeeId, $start, $end)
     {
-
         $conflict = $this->repository->checkAvailable($employeeId, $start, $end);
         if ($conflict) {
             throw new Exception("O barbeiro já possui um agendamento neste horário.");
@@ -51,5 +55,11 @@ class AppointmentService extends BaseService
     public function myAppointments(int $userId)
     {
         return $this->repository->myAppointments($userId);
+    }
+    public function getEmployeeDailyAgenda(int $employeeId)
+    {
+        $user = $this->userRepository->findById($employeeId);
+        $user->validateSchedulePermission();
+        return $this->repository->getDailySchedule($employeeId);
     }
 }

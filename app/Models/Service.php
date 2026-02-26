@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use DateTimeInterface;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -20,10 +21,15 @@ class Service extends Model
         'slug',
     ];
 
-    protected static function boot(){
+    protected function serializeDate(DateTimeInterface $date): string
+    {
+        return $date->format('Y-m-d H:i:s');
+    }
+    protected static function boot()
+    {
         parent::boot();
-        static::creating(function(Service $service){
-            $service->slug= Str::slug($service->name,'_');
+        static::creating(function (Service $service) {
+            $service->slug = Str::slug($service->name, '_');
         });
     }
     /**
@@ -32,7 +38,8 @@ class Service extends Model
      */
     public function barbers(): BelongsToMany
     {
-        return $this->belongsToMany(User::class,'service_user')
+        return $this->belongsToMany(User::class, 'service_user')
+            ->using(ServiceUser::class)
             ->withPivot('price')
             ->withTimestamps();
     }

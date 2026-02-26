@@ -13,7 +13,7 @@ class AppServiceProvider extends ServiceProvider
     {
         // Por enquanto, não conseguimos fazer o bind de uma classe abstrata diretamente, 
         // mas o Laravel fará isso automaticamente quando criarmos os repositórios reais.
-        
+
         // O que você vai registrar aqui são os CONTRATOS REAIS que o sistema vai usar.
         // Exemplo:
         // $this->app->bind(ServiceRepositoryInterface::class, ServiceRepository::class);
@@ -24,6 +24,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        
     }
 }
