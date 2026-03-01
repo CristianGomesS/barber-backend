@@ -59,7 +59,10 @@ class AppointmentRepository extends BaseRepository
         $targetDate = $date ?: now()->format('Y-m-d');
 
         return $this->entity
-            ->with(['customer', 'service'])
+            ->with([
+            'customer:id,name,email', 
+            'service:id,name,duration_minutes',
+            ])
             ->where('employee_id', $employeeId)
             ->whereDate('scheduled_at', $targetDate)
             ->where('status', '!=', 'canceled')
