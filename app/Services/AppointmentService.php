@@ -20,8 +20,14 @@ class AppointmentService extends BaseService
         parent::__construct($repository);
         $this->userRepository = $userRepository;
     }
-
-
+    /**
+     * Cria um agendamento para um funcionário com base nos dados enviados.
+     * 
+     * @param array $data Dados para criar o agendamento.
+     * @return mixed O agendamento criado.
+     * 
+     * @throws Exception Se o funcionário tiver algum agendamento no horário especificado ou se a data for retroativa.
+     */
     public function createAppointment(array $data): mixed
     {
         $employee = $this->userRepository->findById($data['employee_id']);
@@ -42,7 +48,13 @@ class AppointmentService extends BaseService
     }
 
     /**
-     * Verifica se o barbeiro tem algum agendamento que sobrepõe o horário desejado
+     * Verifica se o funcionário tem algum agendamento no horário especificado.
+     *
+     * @param int $employeeId O ID do funcionário.
+     * @param Carbon $start O horário de início do agendamento.
+     * @param Carbon $end O horário de fim do agendamento.
+     *
+     * @throws Exception Se o funcionário tiver algum agendamento no horário especificado.
      */
     public function checkAvailable(int $employeeId, $start, $end)
     {
@@ -52,14 +64,30 @@ class AppointmentService extends BaseService
         }
     }
 
+    /**
+     * Retorna todas as consultas do usuário autenticado.
+     *
+     * @param int $userId O ID do usuário para o qual as consultas serão obtidas.
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function myAppointments(int $userId)
     {
         return $this->repository->myAppointments($userId);
     }
-    public function getEmployeeDailyAgenda(int $employeeId)
+    /**
+     * Retorna a agenda diária do funcionário específico.
+     * @param int $employeeId O ID do funcionário para o qual a agenda diária será obtida.
+     * @return \Illuminate\Database\Eloquent\Collection
+     * @throws \Exception Se o usuário não tiver permissão para visualizar a agenda do funcionário.
+     */
+    public function getEmployeeDailyAgenda(int $employeeId, ?string $date = null)
     {
+        $targetDate = $date 
+        ? \Illuminate\Support\Carbon::createFromFormat('d/m/Y', $date)->format('Y-m-d') 
+        : now()->format('Y-m-d');
         $user = $this->userRepository->findById($employeeId);
         $user->validateSchedulePermission();
-        return $this->repository->getDailySchedule($employeeId);
+        return $this->repository->getDailySchedule($employeeId, $targetDate);
     }
 }

@@ -6,8 +6,8 @@ use App\Http\Controllers\Api\BaseController;
 use App\Http\Requests\AppointmensStoreUpdateFormResquest;
 use App\Http\Resources\AppointmentResource;
 use App\Services\AppointmentService;
-use Illuminate\Http\Client\Request;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 
 /**
  * @property AppointmentService $service
@@ -32,18 +32,30 @@ class AppointmentController extends BaseController
             return response()->json(['error' => $e->getMessage()], 422);
         }
     }
+   
+    /**
+     * Retorna as consultas do usuário autenticado.
+     * 
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function myAppointments(): JsonResponse
     {
         $appointments = $this->service->myAppointments(auth()->id());
         return response()->json(AppointmentResource::collection($appointments));
     }
 
-    public function myAgenda(Request $request)
+    /**
+     * Retorna a agenda diária do funcionário autenticado.
+     * chave data opcional caso nao coloque sera o dia atual
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function mySchedule(Request $request)
     {
         $employeeId = auth()->id();
+        $date = $request->input('date');
+        $appointments = $this->service->getEmployeeDailyAgenda($employeeId,$date);
 
-        $appointments = $this->service->getEmployeeDailyAgenda($employeeId);
-
-        return AppointmentResource::collection($appointments);
+        return response()->json($appointments); //;
     }
 }

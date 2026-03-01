@@ -23,6 +23,8 @@ class Appointment extends Model
         'scheduled_at' => 'datetime',
         'end_at' => 'datetime',
     ];
+    protected $hidden = ['created_at', 'updated_at','deleted_at'];
+
     protected function serializeDate(DateTimeInterface $date): string
     {
         return $date->format('Y-m-d H:i:s');
