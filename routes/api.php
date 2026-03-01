@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\AbilityController;
 use App\Http\Controllers\Api\AppointmentController;
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\AvailabilityController;
 use App\Http\Controllers\Api\ForgotPasswordController;
 use App\Http\Controllers\Api\RoleController;
 use App\Http\Controllers\Api\ServiceController;
@@ -59,8 +60,12 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::prefix('appointments')->group(function () {
         Route::get('/', [AppointmentController::class, 'myAppointments'])->name('api.appointments.index')->middleware(['abilities:list_appointments']);
         Route::post('/', [AppointmentController::class, 'beforeStore'])->name('api.appointments.store')->middleware(['abilities:create_appointments']);
+        Route::get('/mySchedule', [AppointmentController::class, 'mySchedule'])->name('api.appointments.index')->middleware(['abilities:list_appointments']);
     });
-
+    Route::prefix('barbers')->group(function () {
+        Route::get('/{id}/slots', [AvailabilityController::class, 'getSlots']);
+        Route::post('/availability', [AvailabilityController::class, 'BeforeStore']);
+    });
 });
 
 // Route::fallback(function () {
