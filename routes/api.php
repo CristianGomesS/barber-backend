@@ -26,10 +26,10 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::prefix('users')->group(function () {
         Route::get('/', [UserController::class, 'index'])->name('api.users.index')->middleware(['abilities:list_users']);
         Route::get('/{id}', [UserController::class, 'show'])->name('api.users.show')->middleware(['abilities:list_users']);
-        Route::post('/', [UserController::class, 'store'])->name('api.users.store')->middleware(['abilities:create_user']);
-        Route::put('/{id}', [UserController::class, 'update'])->name('api.users.update')->middleware(['abilities:update_user']);
-        Route::delete('/{id}', [UserController::class, 'destroy'])->name('api.users.destroy')->middleware(['abilities:delete_user']);
-        Route::put('restore/{id}', [UserController::class, 'restore'])->name('api.users.restore')->middleware(['abilities:delete_user']);
+        Route::post('/', [UserController::class, 'beforeStore'])->name('api.users.store')->middleware(['abilities:create_users']);
+        Route::put('/{id}', [UserController::class, 'update'])->name('api.users.update')->middleware(['abilities:update_users']);
+        Route::delete('/{id}', [UserController::class, 'destroy'])->name('api.users.destroy')->middleware(['abilities:delete_users']);
+        Route::put('restore/{id}', [UserController::class, 'restore'])->name('api.users.restore')->middleware(['abilities:delete_users']);
     });
 
     Route::prefix('service')->group(function () {
