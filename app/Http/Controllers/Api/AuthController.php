@@ -4,11 +4,9 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\LoginFormRequest;
-use App\Models\User;
+use App\Http\Requests\RegisterUserFormRequest;
 use App\Services\UserService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\ValidationException;
 
 class AuthController extends Controller
 {
@@ -18,6 +16,16 @@ class AuthController extends Controller
     {
         $this->service = $service;
     }
+
+    public function register(RegisterUserFormRequest $request)
+    {
+        $token = $this->service->register($request->validated());
+        return response()->json([
+            'message' => 'Usuário registrado com sucesso!',
+            'token' => $token
+        ], 201);
+    }
+
     public function login(LoginFormRequest $request)
     {
         $token = $this->service->login($request);

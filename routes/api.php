@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::post('/login', [AuthController::class, 'login'])->name('login');
+Route::post('/register', [AuthController::class, 'register'])->name('register');
 Route::post('/auth/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
 Route::post('forget-password', [ForgotPasswordController::class, 'forgotPassword']);
 Route::post('valid-token', [ForgotPasswordController::class, 'validToken']);
