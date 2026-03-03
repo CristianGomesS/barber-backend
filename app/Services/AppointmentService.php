@@ -83,11 +83,37 @@ class AppointmentService extends BaseService
      */
     public function getEmployeeDailyAgenda(int $employeeId, ?string $date = null)
     {
-        $targetDate = $date 
-        ? \Illuminate\Support\Carbon::createFromFormat('d/m/Y', $date)->format('Y-m-d') 
-        : now()->format('Y-m-d');
+        $targetDate = $date
+            ? \Illuminate\Support\Carbon::createFromFormat('d/m/Y', $date)->format('Y-m-d')
+            : now()->format('Y-m-d');
         $user = $this->userRepository->findById($employeeId);
         $user->validateSchedulePermission();
         return $this->repository->getDailySchedule($employeeId, $targetDate);
+    }
+
+    /**
+     * Finaliza o agendamento mudando seu status para "completed".
+     *
+     * @param int $appointmentId
+     * @param int $userId O ID do usuário que está tentando finalizar (normalmente o funcionário).
+     * @return mixed
+     * @throws Exception
+     */
+    public function finalize(int $appointmentId, int $userId)
+    {
+        $appointment = $this->repository->findById($appointmentId);
+        $user = $this->userRepository->findById($userId);
+
+        // Apenas o funcionário que vai realizar o serviço ou um admin pode finalizar
+        if ($appointment->employee_id !== $userId && !$user->isAdmin()) {
+            throw new Exception("Você não tem permissão para finalizar este atendimento.");
+        }
+        if ($appointment->status === 'completed') {
+            throw new Exception("Este atendimento já foi finalizado.");
+        }
+        return DB::transaction(function () use ($appointmentId, $appointment) {
+            $appointment->delete();
+            return $this->repository->update($appointmentId, ['status' => 'completed']);
+        });
     }
 }

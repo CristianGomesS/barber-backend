@@ -19,7 +19,7 @@ return new class extends Migration
             $table->dateTime('scheduled_at');
             $table->dateTime('end_at');
             $table->decimal('final_price', 10, 2); // Valor fixado no agendamento
-            $table->string('status'); // pending, confirmed, cancelled
+            $table->string('status'); // pending, confirmed, cancelled, completed
             $table->timestamps();
             $table->softDeletes();
         });

@@ -58,4 +58,23 @@ class AppointmentController extends BaseController
 
         return response()->json($appointments); //;
     }
+
+    /**
+     * Finaliza o atendimento alterando o status para concluded/completed.
+     *
+     * @param int $id ID do agendamento
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function finalize(int $id): JsonResponse
+    {
+        try {
+            $appointment = $this->service->finalize($id, auth()->id());
+            return response()->json([
+                'message' => 'Atendimento finalizado com sucesso!',
+                'data' => $appointment
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 422);
+        }
+    }
 }

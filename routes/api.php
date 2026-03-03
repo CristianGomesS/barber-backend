@@ -62,6 +62,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         Route::get('/', [AppointmentController::class, 'myAppointments'])->name('api.appointments.index')->middleware(['abilities:list_appointments']);
         Route::post('/', [AppointmentController::class, 'beforeStore'])->name('api.appointments.store')->middleware(['abilities:create_appointments']);
         Route::get('/mySchedule', [AppointmentController::class, 'mySchedule'])->name('api.appointments.index')->middleware(['abilities:list_appointments']);
+        Route::put('/{id}/finalize', [AppointmentController::class, 'finalize'])->name('api.appointments.finalize')->middleware(['abilities:update_appointments']);
     });
     Route::prefix('barbers')->group(function () {
         Route::get('/{id}/slots', [AvailabilityController::class, 'getSlots']);
