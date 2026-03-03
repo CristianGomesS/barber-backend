@@ -109,7 +109,7 @@ class User extends Authenticatable
     {
 
         $service = $this->services()->where('services.id', $serviceId)->first();
-        if (! $service) {
+        if (!$service) {
             throw new Exception("Este barbeiro não realiza o serviço selecionado.");
         }
         return $service;

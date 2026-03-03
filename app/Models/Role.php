@@ -3,11 +3,13 @@
 namespace App\Models;
 
 use DateTimeInterface;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 
 class Role extends Model
 {
+    use HasFactory;
     protected $table = 'roles';
     protected $fillable = ['name', 'slug'];
     protected static function boot()

@@ -3,10 +3,12 @@
 namespace App\Models;
 
 use DateTimeInterface;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class RoleAbility extends Model
 {
+    use HasFactory;
     protected $table = 'ability_role';
 
     protected $fillable = [
