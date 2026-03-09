@@ -9,13 +9,13 @@ Backend robusto para gestão de barbearia, desenvolvido com **Laravel 11/12** se
 - [x] **Esqueci minha senha**: Geração de token aleatório de 5 dígitos.
 - [x] **E-mail Transacional**: Envio de template Blade customizado (Dark/Gold).
 - [x] **Reset de Senha**: Validação de token e alteração com `password_confirmation`.
-- [ ] **Múltiplos Perfis**: Diferenciação entre Cliente, Barbeiro e Admin.
+- [x] **Múltiplos Perfis**: Diferenciação entre Cliente, Barbeiro e Admin.
 
 ### 2. Gestão de Dados (CRUDs)
 - [x] **Usuários (Users)**: Cadastro e gerenciamento de perfis.
 - [x] **Serviços (Services)**: Cadastro de itens (Corte, Barba, Combo) com preço e tempo.
 - [x] **Agendamentos (Appointments)**: Estrutura base de vinculação cliente/serviço.
-- [ ] **Disponibilidade**: Lógica de bloqueio de horários ocupados.
+- [x] **Disponibilidade**: Lógica de bloqueio de horários ocupados.
 
 ## 🏗️ Arquitetura
 O projeto utiliza uma separação clara de responsabilidades para facilitar a escalabilidade:

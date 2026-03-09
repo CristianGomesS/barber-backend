@@ -54,10 +54,10 @@ class User extends Authenticatable
         ];
     }
 
-    protected function setPasswordAttribute($value)
-    {
-        $this->attributes['password'] = Hash::make($value);
-    }
+    // protected function setPasswordAttribute($value)
+    // {
+    //     $this->attributes['password'] = Hash::make($value);
+    // }
     protected function serializeDate(DateTimeInterface $date): string
     {
         return $date->format('Y-m-d H:i:s');
@@ -94,7 +94,13 @@ class User extends Authenticatable
     public function validateSchedulePermission(): void
     {
         if (!$this->hasSchedulePermission()) {
-            throw new \Exception("Usuário não tem permissão para possuir uma agenda.");
+            throw new \Exception("Você não tem permissão para possuir uma agenda.");
+        }
+    }
+    public function validateActionPermission(): void
+    {
+        if (!$this->hasSchedulePermission()) {
+            throw new \Exception("Você não tem permissão para realizar esta ação.");
         }
     }
     public function validateProfessionalCapability(int $serviceId)

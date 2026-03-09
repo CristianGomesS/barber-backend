@@ -112,8 +112,9 @@ class AppointmentService extends BaseService
             throw new Exception("Este atendimento já foi finalizado.");
         }
         return DB::transaction(function () use ($appointmentId, $appointment) {
+            $updatedAppointment = $this->repository->update($appointmentId, ['status' => 'completed']);
             $appointment->delete();
-            return $this->repository->update($appointmentId, ['status' => 'completed']);
+            return $updatedAppointment;
         });
     }
 }

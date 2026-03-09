@@ -2,9 +2,9 @@
 
 use App\Models\User;
 use App\Models\Role;
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 
-uses(RefreshDatabase::class);
+uses(DatabaseTransactions::class);
 
 it('registra um novo cliente via api', function () {
     // Garante que o Role exista pra esse teste passar (mesmo sem db reset)
@@ -26,6 +26,9 @@ it('registra um novo cliente via api', function () {
 });
 
 it('bloqueia emails descatáveis como emailq.com', function () {
+    // Garante que o Role exista pra esse teste passar
+    Role::firstOrCreate(['slug' => 'customer'], ['name' => 'Cliente']);
+
     $response = $this->postJson('/api/register', [
         'name' => 'Zezinho Fake',
         'email' => 'fake@emailq.com',
@@ -34,7 +37,10 @@ it('bloqueia emails descatáveis como emailq.com', function () {
     ]);
 
     $response->assertStatus(422)
-        ->assertJsonValidationErrors(['email']);
+        ->assertJson([
+            'error' => 'Erro na validação dos dados.'
+        ])
+        ->assertJsonStructure(['error', 'details' => ['email']]);
 });
 
 it('permite que administradores criem usuários com regra beforeStore', function () {

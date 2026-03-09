@@ -45,4 +45,10 @@ abstract class BaseController extends Controller
         $this->service->destroy($id);
         return response()->json([], 204);
     }
+    public function restore(int $id): JsonResponse
+    {
+        $this->service->destroy($id);
+        return response()->json([], 204);
+    }
+
 }

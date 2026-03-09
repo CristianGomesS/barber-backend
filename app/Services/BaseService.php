@@ -41,6 +41,10 @@ abstract class BaseService
     {
         return $this->repository->destroy($id);
     }
+    public function restore(int $id)
+    {
+        return $this->repository->restore($id);
+    }
     public function findWhereFirst(string $column, string $value)
     {
         return $this->repository->findWhereFirst($column, $value);

@@ -10,6 +10,7 @@ use App\Http\Requests\ValidTokenFormRequest;
 use App\Services\ForgotPasswordService;
 use Illuminate\Http\JsonResponse;
 
+
 class ForgotPasswordController extends Controller
 {
     private $service;
@@ -19,7 +20,7 @@ class ForgotPasswordController extends Controller
         $this->service = $service;
     }
 
-  public function forgotPassword(ForgotPasswordFormRequest $request)
+    public function forgotPassword(ForgotPasswordFormRequest $request)
     {
         try {
             $this->service->sendResetLink($request->email);
@@ -38,7 +39,7 @@ class ForgotPasswordController extends Controller
 
     public function resetPassword(ResetPasswordFormRequest $request): JsonResponse
     {
-       try {
+        try {
             $this->service->resetPassword($request->all());
             return response()->json(['message' => 'Senha alterada com sucesso!']);
         } catch (\Exception $e) {

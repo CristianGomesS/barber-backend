@@ -34,7 +34,7 @@ class UserService extends BaseService
     public function login(Request $data)
     {
         $user = $this->repository->findWhereFirst('email', $data->email);
-         if (! $user || ! Hash::check($data->password, $user->password)) {
+        if (!$user || !Hash::check($data->password, $user->password)) {
             throw ValidationException::withMessages([
                 'email' => ['As credenciais fornecidas estão incorretas.'],
             ]);
@@ -54,12 +54,12 @@ class UserService extends BaseService
         $data['password'] = Str::random(10);
         $this->repository->store($data);
         $linkBase = request()->server('HTTP_ORIGIN') ?? 'URL NÃO ENCONTRADA';
-        Mail::send('email.accountCreation',  [
+        Mail::send('email.accountCreation', [
             'code' => $data['password'],
             "link" => $linkBase,
             'name' => 'BarberShop',
             'title' => 'BarberShop - Estilo e Atitude',
-            'logo'  => public_path('img/logotipoTeste.png')
+            'logo' => public_path('img/logotipoTeste.png')
         ], function ($message) use ($data) {
             $message->to($data['email']);
             $message->subject('Criação de Conta - BarberShop');

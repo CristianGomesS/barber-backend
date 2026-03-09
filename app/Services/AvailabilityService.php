@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Repositories\Core\AppointmentRepository;
 use App\Repositories\Core\AvailabilityRepository;
 use App\Repositories\Core\ServiceRepository;
+use App\Repositories\Core\UserRepository;
 use App\Services\BaseService;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -15,14 +16,14 @@ use Illuminate\Support\Facades\DB;
 
 class AvailabilityService extends BaseService
 {
-    public $availabilityRepopository;
+    public $userRepopository;
     public $appointmentRepository;
     public $serviceRepository;
 
-    public function __construct(AvailabilityRepository $repository, AvailabilityRepository $availabilityRepopository, AppointmentRepository $appointmentRepository, ServiceRepository $serviceRepository)
+    public function __construct(AvailabilityRepository $repository, UserRepository $userRepopository, AppointmentRepository $appointmentRepository, ServiceRepository $serviceRepository)
     {
         parent::__construct($repository);
-        $this->availabilityRepopository = $availabilityRepopository;
+        $this->userRepopository = $userRepopository;
         $this->appointmentRepository = $appointmentRepository;
         $this->serviceRepository = $serviceRepository;
     }
@@ -84,20 +85,22 @@ class AvailabilityService extends BaseService
     }
     /**
      * Armazena a disponibilidade de um funcionário em massa.
-     *
      * @param array $availabilities
      * @return mixed
      * @throws \Exception
      */
     public function storeBulkAvailability(array $availabilities)
     {
-        $userId = $availabilities['user_id'];
-        return DB::transaction(function () use ($userId, $availabilities) {
+        /** @var \App\Models\User $user */
+        $user = $this->userRepopository->findById($availabilities['user_id']);
+        $user->validateActionPermission();
+
+        return DB::transaction(function () use ($user, $availabilities) {
             foreach ($availabilities['availabilities'] as $item) {
                 if (strtotime($item['start_time']) >= strtotime($item['end_time'])) {
                     throw new \Exception("Erro no dia {$item['day_of_week']}: Início deve ser menor que o fim.");
                 }
-                $item['user_id'] = $userId;
+                $item['user_id'] = $user->id;
                 $this->repository->updateOrCreate($item);
             }
         });
